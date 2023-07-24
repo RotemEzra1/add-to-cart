@@ -14,6 +14,7 @@ const appSettings = {
 const addButton = document.getElementById("add-button");
 const inputField = document.getElementById("input-field");
 const shoppingList = document.getElementById("shopping-list");
+const spanEl = document.getElementById("span-el");
 
 const app = initializeApp(appSettings);
 const database = getDatabase(app);
@@ -21,6 +22,10 @@ const shoppingListInDB = ref(database, "shoppingList");
 
 addButton.addEventListener("click", function () {
   let inputValue = inputField.value;
+  if(inputValue === "") {
+    spanEl.textContent = "Please enter a valid item."
+    return
+  }
   push(shoppingListInDB, inputValue);
   clearInputField();
 });
@@ -32,9 +37,9 @@ onValue(shoppingListInDB, function (snapshot) {
 
     for (let i = 0; i < itemsArray.length; i++) {
       let currentItem = itemsArray[i];
+      console.log(currentItem);
       let currentItemID = currentItem[0];
       let currentItemValue = currentItem[1];
-
       appendItemToShoppingList(currentItem);
     }
   } else {
@@ -53,8 +58,17 @@ function clearShoppingList() {
 function appendItemToShoppingList(item) {
   let itemID = item[0];
   let itemValue = item[1];
-
   let newEl = document.createElement("li");
+  // if(itemValue === "") {
+  //   let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`);
+  //   remove(exactLocationOfItemInDB);
+  //   spanEl.innerHTML = "error"
+
+  //   return;
+  // }else {
+  //   newEl.textContent = itemValue;
+
+  // }
   newEl.textContent = itemValue;
 
   newEl.addEventListener("dblclick", function () {
