@@ -22,12 +22,14 @@ const shoppingListInDB = ref(database, "shoppingList");
 
 addButton.addEventListener("click", function () {
   let inputValue = inputField.value;
-  if(inputValue === "") {
-    spanEl.textContent = "Please enter a valid item."
-    return
+  if (inputValue === "") {
+    spanEl.textContent = "Please enter a valid item.";
+    return;
+  } else {
+    spanEl.textContent = ""
+    push(shoppingListInDB, inputValue);
+    clearInputField();
   }
-  push(shoppingListInDB, inputValue);
-  clearInputField();
 });
 
 onValue(shoppingListInDB, function (snapshot) {
@@ -59,16 +61,6 @@ function appendItemToShoppingList(item) {
   let itemID = item[0];
   let itemValue = item[1];
   let newEl = document.createElement("li");
-  // if(itemValue === "") {
-  //   let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`);
-  //   remove(exactLocationOfItemInDB);
-  //   spanEl.innerHTML = "error"
-
-  //   return;
-  // }else {
-  //   newEl.textContent = itemValue;
-
-  // }
   newEl.textContent = itemValue;
 
   newEl.addEventListener("dblclick", function () {
